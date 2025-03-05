@@ -1,0 +1,55 @@
+# encoding: utf-8
+---
+recipe:
+  Rx: plum/full
+  args:
+  description: >-
+    全量安装、更新。
+    安装方式：`[plum 脚本] [用户或组织名]/[仓库名]:plum/full`
+          即  `rime-install rimeinn/rime-tiger:plum/full`
+    安装前务必备份 Rime 用户目录。
+    为防止被无意覆盖，本 recipe 仍不包括 `default.yaml` 和 `squirrel.yaml`。请手动复制这两个文件到 Rime 用户目录下。
+    如需使用 AMZ 语言模型，也请手动下载并放至 Rime 用户目录下。
+install_files: >-
+  assets/*.*
+  dicts/*.*
+  opencc/**/*
+  lua/hertz/*.*
+  lua/tiger/*.*
+  predict.db
+  charset.dict.yaml
+  charset.schema.yaml
+  easy_en.dict.yaml
+  easy_en.schema.yaml
+  fast_symbol.dict.yaml
+  fast_symbol.schema.yaml
+  hamster.custom.yaml
+  hamster_keyboards_iOS.yaml
+  japanese.dict.yaml
+  japanese.schema.yaml
+  pinyin.dict.yaml
+  pinyin.schema.yaml
+  radical_flypy.dict.yaml
+  radical_flypy.schema.yaml
+  tiger.yaml
+  tiger_chord_popping.dict.yaml
+  tiger_chord_popping.schema.yaml
+  tiger_code.dict.yaml
+  tiger_code.schema.yaml
+  tiger_code_52p.schema.yaml
+  tiger_code_53p.schema.yaml
+  tiger_codes.dict.yaml
+  tiger_codes.schema.yaml
+  tiger_oni.dict.yaml
+  tiger_oni.schema.yaml
+  tiger_phrase.schema.yaml
+  tiger_phrase_chord.dict.yaml
+  tiger_phrase_chord.schema.yaml
+  tiger_phrase_hertz.dict.yaml
+  tiger_phrase_ice.dict.yaml
+  tiger_phrase_moran.dict.yaml
+  tiger_phrase_wanxiang.dict.yaml
+  tiger_phrases.dict.yaml
+  tiger_phrases.schema.yaml
+  tiger_spelling_pseudo.dict.yaml
+  tiger_spelling_pseudo.schema.yaml
