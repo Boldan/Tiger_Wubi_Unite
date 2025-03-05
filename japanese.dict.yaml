@@ -1,0 +1,14 @@
+# Rime dictionary: japanese
+# encoding: utf-8
+# CC-BY-4.0
+
+---
+name: japanese
+version: '2024-11-12'
+
+import_tables:
+  - dicts/japanese.mozc
+  - dicts/japanese.jmdict
+  - dicts/japanese.kana
+  - dicts/japanese.hertz
+...

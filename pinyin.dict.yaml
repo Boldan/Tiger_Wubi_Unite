@@ -1,0 +1,15 @@
+# Rime dictionary: pinyin
+# encoding: utf-8
+# CC-BY-4.0
+
+---
+name: pinyin
+version: "2024-11-12"
+sort: by_weight
+import_tables:
+  - dicts/pinyin.large
+  - dicts/pinyin.base
+  - dicts/pinyin.ext
+  - dicts/pinyin.corrections
+  - dicts/pinyin.compatible
+...

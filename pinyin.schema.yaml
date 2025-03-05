@@ -1,0 +1,49 @@
+# Rime schema
+# encoding: utf-8
+# CC-BY-4.0
+
+tone_display: true
+
+schema:
+  schema_id: pinyin
+  name: 拼音反查（勿用）
+  version: "2024-10-31"
+  description: 用于多双拼方案反查选择（不用勾选）
+
+__include: tiger:/switches_engine_script       # Rime模块
+__include: tiger:/s2t_filter                   # 简繁滤镜
+__include: tiger:/emoji_filter                 # Emoji 滤镜
+__include: tiger:/mars_filter                  # 火星文滤镜
+# __include: tiger:/custom_phrase                  # 用户词库
+speller:
+  alphabet: ";'zyxwvutsrqponmlkjihgfedcba]"    # 输入范围 码元
+  delimiter: " '"
+  algebra:
+    __include: tiger:/pinyin?
+
+translator:
+  dictionary: pinyin           # 字典文件
+  prism: pinyin
+  initial_quality: 1           # 该翻译器出字优先级别
+  enable_user_dict: true
+  enable_charset_filter: false
+  enable_encoder: false
+  enable_sentence: true
+  encode_commit_history: true
+  enable_completion: true
+
+key_binder:
+  import_preset: default
+  custom_bindings:
+    __append:
+      # 在這裏添加只在本方案中生效的按鍵綁定
+  bindings:
+    __patch:
+      - tiger:/keys/page_up_down
+      - tiger:/keys/selector
+      - tiger:/keys/options_toggle
+
+__include: tiger:/rec
+
+punctuator: # 设定符号表，这里直接导入外部的symbols文件夹
+  import_preset: symbols
