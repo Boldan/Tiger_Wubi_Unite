@@ -1,0 +1,117 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: wubi06_trad
+  name: "五笔06·简入繁出"
+  version: "0.7"
+  author:
+    - 发明人 王永民先生
+    - 方案制作人 郭斌勇 <guobinyong@qq.com>
+  description: |
+    新世纪五笔 简入繁出
+    需要安装 opencc 简繁转换词典
+  dependencies:
+    - pinyin_simp
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    states: [ 半角, 全角 ]
+  - name: extended_charset
+    states: [ 常用, 增廣 ]
+  - name: zh_trad
+    reset: 1
+    states: [ 简体, 繁體 ]
+  - name: ascii_punct
+    states: [ 。，, ．， ]
+  - name: emoji_suggestion
+    reset: 1
+    states: [ "🈚️️\uFE0E", "🈶️️\uFE0F" ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+    - table_translator@custom_phrase
+  filters:
+    - simplifier@zh_trad
+    - simplifier@emoji_suggestion
+    - uniquifier
+
+speller:
+  delimiter: " ;'"
+  #max_code_length: 4
+
+translator:
+  dictionary: wubi06
+  prism: wubi06_trad
+  enable_charset_filter: true
+  enable_sentence: false                # 句子输入模式
+  enable_user_dict: true               # 是否开启用户词典（用户词典记录动态字词频，用户词）
+  enable_encoder: false                  # 自动造词
+  encode_commit_history: false          # 是否对已上屏的词自动造词
+  encode_commit_history: false
+  enable_completion: false
+  disable_user_dict_for_patterns:
+    - "^z.*$"
+
+custom_phrase:  # 设置用户字/词典
+  dictionary: ""
+  user_dict: Custom_phrase  # 指向 Custom_phrase.txt 文档
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: true
+  initial_quality: 0.5
+
+abc_segmentor:
+  extra_tags:
+    - reverse_lookup
+
+reverse_lookup:
+  dictionary: pinyin_simp
+  prefix: "`"
+  suffix: "'"
+  tips: 〔拼音〕
+  preedit_format:
+    - xform/([nl])v/$1ü/
+    - xform/([nl])ue/$1üe/
+    - xform/([jqxy])v/$1u/
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  import_preset: default
+  patterns:
+    reverse_lookup: "`[a-z]*'?$"
+
+zh_trad:
+  opencc_config: s2t.json
+  option_name: zh_trad
+
+emoji_suggestion:
+  opencc_config: emoji.json
+  option_name: emoji_suggestion
+  tips: all

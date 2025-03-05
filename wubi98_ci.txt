@@ -1,0 +1,9 @@
+# Rime table
+#@/db_name	wubi98_ci
+#@/db_type	tabledb
+#@/rime_version	1.11.2
+#@/tick	10
+工	aaaa	2
+古旧	dghj	3
+下步	ghhh	9
+目	hhhh	2

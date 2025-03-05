@@ -1,0 +1,7 @@
+# Rime table
+#@/db_name	wubi98_U
+#@/db_type	tabledb
+#@/rime_version	1.12.0
+#@/tick	3
+𰢐	ghhh	1
+𭩳	saaa	2

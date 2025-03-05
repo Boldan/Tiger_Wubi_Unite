@@ -1,0 +1,28 @@
+# Rime dictionary: wubi98_ci.extended
+# encoding: utf-8
+
+---
+name: wubi98_ci.extended
+version: "2.0"
+sort: by_weight
+import_tables:
+  - wubi98_ci
+  - dicts/user_wubi
+columns:
+  - text
+  - code
+  - weight
+  - stem
+encoder:
+  exclude_patterns:
+    - '^z.*$'
+  rules:
+    - length_equal: 2
+      formula: "AaAbBaBb"
+    - length_equal: 3
+      formula: "AaBaCaCb"
+    - length_in_range: [4, 90]
+      formula: "AaBaCaZa"
+
+...
+
