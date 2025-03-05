@@ -1,0 +1,9 @@
+# Rime table
+#@/db_name	PY_c
+#@/db_type	tabledb
+#@/rime_version	1.11.2
+#@/tick	3
+都是	dou shi	1
+首选	shou xuan	1
+一般情况下	yi ban qing kuang xia	1
+一般情况下都是首选	yi ban qing kuang xia dou shi shou xuan	1
