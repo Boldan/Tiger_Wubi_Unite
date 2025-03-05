@@ -1,0 +1,12 @@
+# Rime dictionary: easy_en
+# encoding: utf-8
+# CC-BY-4.0
+
+---
+name: easy_en
+version: "2024-11-12"
+sort: by_weight
+import_tables:
+  - dicts/en_base
+  - dicts/en_custom
+...

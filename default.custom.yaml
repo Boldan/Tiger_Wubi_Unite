@@ -1,0 +1,27 @@
+# patch:
+#   schema_list:
+    # - schema: PY_c					# 拼音++
+    # - schema: easy_en				# 英文
+    # - schema: numbers				# 数字
+    # - schema: pinyin_simp			# 简体拼音
+    # - schema: tiger					# 虎字·官方
+    # - schema: tiger_chord_popping		# 虎字·并击
+    # - schema: tiger_code				# 虎字·官方
+    # - schema: tiger_code_52p			# 虎字·五顶二
+    # - schema: tiger_code_53p			# 虎字·五顶三
+    # - schema: tiger_codes			# 虎词·官方
+    # - schema: tiger_oni				# 虎码·鬼虎
+    # - schema: tiger_phrase			# 虎字·句
+    # - schema: tiger_phrase_chord		# 虎字·并击
+    # - schema: tiger_phrases			# 虎词·句
+    # - schema: tigress				# 虎词·官方
+    # - schema: wubi06				# 五笔06版
+    # - schema: wubi06_pinyin			# 五笔06版·拼音混输
+    # - schema: wubi06_trad				# 五笔06版·简入繁出·拼音混输
+    # - schema: wubi86_jidian			# 极点五笔86版
+    # - schema: wubi86_jidian_pinyin		# 极点五笔86版·拼音混输
+    # - schema: wubi86_jidian_trad		# 极点五笔86版·简入繁出
+    # - schema: wubi86_jidian_trad_pinyin	# 极点五笔86版·简入繁出·拼音混输
+    # - schema: wubi98_U				# 五笔98版·大字集
+    # - schema: wubi98_ci				# 五笔98版·词
+    # - schema: wubi98_dz				# 五笔98版·字
