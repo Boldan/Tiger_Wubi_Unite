@@ -1,0 +1,24 @@
+# Rime dictionary: tiger_phrase_hertz
+# encoding: utf-8
+# CC-BY-4.0
+
+---
+name: tiger_phrase_hertz
+version: "2.0"
+sort: by_weight
+import_tables:
+  - dicts/tiger_core        # 官方虎单11w+单字
+  - dicts/hertz.base
+  - dicts/hertz.ext
+  - dicts/hertz.compatible
+  - dicts/hertz.corrections
+  - dicts/kaomoji           # Vv进入Kaomoji颜表情
+  - dicts/user_tiger
+  
+columns:
+  - text
+  - code
+  - weight
+  - stem
+
+...

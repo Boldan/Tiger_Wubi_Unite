@@ -1,0 +1,115 @@
+# Rime schema
+# encoding: utf-8
+# CC-BY-4.0
+
+schema:
+  author:
+    - Hertz Hwang <hertz@26hz.com.cn>
+  dependencies:
+    - charset
+    - pinyin
+    - fast_symbol
+    - tiger_spelling_pseudo
+    - radical_flypy
+    - easy_en
+    - japanese
+    - tiger_codes
+    - tiger_oni
+    - tiger_phrase
+  description: |
+    🐯·词句
+  name: "虎词·句"
+  schema_id: tiger_phrases
+  version: "2024-11-22"
+
+__patch:
+  - tiger_code.custom:/patch?
+  - engine/filters/@next: simplifier@chinese_english
+  - engine/filters/@next: lua_filter@*hertz.tiger_spelling*filter
+
+__include: tiger:/switches_engine_script       # Rime模块
+__include: tiger:/fast_symbol_translator       # 快符
+__include: tiger:/easy_en_translator           # 英文
+__include: tiger:/japanese_translator          # 日文
+__include: tiger:/radical_flypy_translator     # 部件拆字
+__include: tiger:/tiger_codes_translator       # 官方虎词
+__include: tiger:/tiger_oni_translator         # 九重鬼虎
+__include: tiger:/tiger_phrase_translator      # 赫兹虎单整句
+__include: tiger:/tiger_phrases_translator     # 官方虎词整句
+__include: tiger:/reverse_lookup_translator_xh # 小鹤反查
+__include: tiger:/custom_phrase # 用户词库
+__include: tiger:/s2t_filter                   # 简繁滤镜
+__include: tiger:/history_filter               # z 键历史
+__include: tiger:/emoji_filter                 # Emoji 滤镜
+__include: tiger:/cn_en_filter                 # 中英滤镜
+__include: tiger:/mars_filter                  # 火星文滤镜
+__include: tiger:/embeded_cands_filter         # 候选嵌入
+__include: tiger:/hertz                        # Hertz定制
+
+speller:
+  auto_clear: max_length
+  auto_select: true
+  max_code_length: 5
+  alphabet: ";'zyxwvutsrqponmlkjihgfedcbaUPOI]/V@"
+  delimiter: "_'"
+  auto_select_pattern: ^;\w+
+  algebra:
+    __patch:
+      - tiger:/algebra/phrases     # 整句拼算
+      - tiger:/algebra/erase       # 擦除编码
+
+translator:
+  dictionary: tiger_phrases
+  __include: tiger:/dict_All_false
+  initial_quality: 1
+  enable_user_dict: true
+  enable_charset_filter: false
+  enable_encoder: false
+  enable_sentence: false
+  encode_commit_history: false
+  enable_completion: true
+  preedit_format:
+    - xform/([a-z])U/$1¹/
+    - xform/([a-z][a-z])I/$1²/
+    - xform/([a-z][a-z][a-z])O/$1³/
+    - xform/([a-z][a-z][a-z][a-z])P/$1⁴/
+
+custom_phrase:  # 设置用户字/词典
+  dictionary: ""
+  user_dict: Custom_phrase  # 指向 Custom_phrase.txt 文档
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: true
+  initial_quality: 0.5
+
+key_binder:
+  import_preset: default
+  custom_bindings:
+    __append:
+      # 在這裏添加只在本方案中生效的按鍵綁定
+  bindings:
+    __patch:
+      - :/key_binder/custom_bindings?
+      - tiger:/keys/emacs_mode
+      - tiger:/keys/tab
+      - tiger:/keys/page_up_down
+      - tiger:/keys/selector
+      - tiger:/keys/options_toggle
+
+__include: tiger:/rec
+
+punctuator:
+  #import_preset:
+  __include: tiger:/punctuator
+
+# 默认启用语言模型
+#__include: tiger:/octagram/enable_for_words
+# 若要禁用，可直接注释掉上面的 __include
+
+tiger_spelling:
+  lua:
+    switch_key: "Control+c"
+    cycle_key: "Shift+Control+C"
+schema_name:
+  spelling: tiger_spelling_pseudo
+  code: tiger_phrases

@@ -1,0 +1,25 @@
+# Rime table
+#@/db_name	tigress
+#@/db_type	tabledb
+#@/rime_version	1.11.2
+#@/tick	984
+繁体转简体	encejyj	1
+声笔输入法	encgryk	1
+仇深似海	encjkjk	1
+薈萃	encljlz	1
+右下半包围	encnfhr	1
+右半包围	encnhnr	1
+左半包围	encnhnr	1
+左右镜像	encnnzj	1
+左上半包围	encnyhr	1
+电信区	encojnb	1
+明月拼音	encovux	1
+精准打击	encpwuu	1
+简体转繁体	encrjyj	1
+朙月拼音	encrvux	1
+语法高亮	encskgg	1
+此电脑	encsovz	1
+辅助码	encyfmn	1
+上半包围	encyhnr	1
+虎码新手村	enczmie	1
+虎码输入法	enczmyk	1

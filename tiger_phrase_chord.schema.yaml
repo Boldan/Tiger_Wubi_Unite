@@ -1,0 +1,272 @@
+# Rime schema
+# encoding: utf-8
+# CC-BY-4.0
+
+schema:
+  author:
+    - Hertz Hwang <hertz@26hz.com.cn>
+  dependencies:
+    - charset
+    - pinyin
+    - fast_symbol
+    - tiger_spelling_pseudo
+    - radical_flypy
+    - easy_en
+    - japanese
+    - tiger_codes
+    - tiger_oni
+    - tiger_phrases
+  description: |
+    🐯·单句·并击
+  name: "虎单·句·并击"
+  schema_id: tiger_phrase_chord
+  version: "2024-12-22"
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 虎, 英 ]
+  - name: extended_char
+    states: [ 全字集, 常用字 ]
+    reset: 1
+  - name: traditionalization
+    states: [ 简, 繁 ]
+    reset: 0
+  - name: full_shape
+    reset: 0
+    states: [ 半角, 全角 ]
+  - name: ascii_punct
+    reset: 0
+    states: [ 。，, ．， ]
+
+engine:
+  processors:
+    - ascii_composer                              # 处理英文模式及中英文切换
+    - chord_composer                              # 处理并击
+    - recognizer                                  # 与 matcher 搭配，处理符合特定规则的输入码，如网址、反查等
+    - key_binder                                  # 在特定条件下将按键绑定到其他按键，如重定义逗号、句号为候选翻页键
+    - lua_processor@*hertz.jane_processor
+    - speller                                     # 把字母追加到编码串
+    - punctuator                                  # 处理符号按键
+    - selector                                    # 选字和换页功能
+    - navigator                                   # 移动插入点
+    - express_editor                              # 空格确认当前输入，其他字符直接上屏
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor                               # 标记输入码的类型
+    - punct_segmentor                             # 割界，与前后方的其他编码区分开
+    - fallback_segmentor
+  translators:
+    - punct_translator                            # 转换标点符号
+    - script_translator                           # 码表转换
+  filters:
+    - lua_filter@*hertz.charset_filter            # 字集过滤
+    - simplifier@s2t                              # 简繁滤镜
+    - uniquifier                                  # 过滤重复的候选字，可能来自简繁转换
+
+__include: tiger:/s2t_filter                      # 简繁滤镜
+
+speller:
+  alphabet: QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm;':"<>?,./~!@#$%^&*()_+-=[]\{}|1234567890
+  delimiter: "_`"
+  algebra:
+    - addrev/([A-Z])/\L$1/
+
+translator:
+  dictionary: tiger_phrase_chord
+  initial_quality: 1
+  enable_user_dict: true
+  enable_charset_filter: false
+  enable_encoder: false
+  enable_sentence: false
+  encode_commit_history: false
+  enable_completion: false
+  preedit_format:
+    # 手动分词标记
+    - xform/([a-z]{4})[']/$1⁴/
+    - xform/([a-z]{3})[']/$1³/
+    - xform/([a-z]{2})[']/$1²/
+    - xform/([a-z]{1})[']/$1¹/
+    # 自动分词标记
+    - xform/([a-z]{1,4})[_]/$1␣/
+    # 其余处理
+    #- xform/([A-Z])/\L$1/
+    - xform/([A-Z])/$1°/  # 并击提示符，可选 ° ∞ ᵆ ʬ ˜ 
+    - xform/([¹²³⁴][a-z]+)[_']/$1/
+    - xform/([¹²³⁴])_/$1/
+    - xform/_/␣/
+    #- xlit/ABCDEFGHIJKLMNOPQRSTUVWXYZ/ạḅċḍẹḟġḥịĵḳḷṃṇọṗꝗṛṣṭụṿẉẋỵẓ/
+    #- xlit/ABCDEFGHIJKLMNOPQRSTUVWXYZ/ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ/
+    
+custom_phrase:  # 设置用户字/词典
+  dictionary: ""
+  user_dict: Custom_phrase  # 指向 Custom_phrase.txt 文档
+  db_class: stabledb
+  enable_completion: true
+  enable_sentence: false
+  initial_quality: 0.5
+  
+key_binder:
+  import_preset: default
+  custom_bindings:
+    __append:
+      # 在這裏添加只在本方案中生效的按鍵綁定
+  bindings:
+    __patch:
+      - :/key_binder/custom_bindings?
+      - tiger:/keys/emacs_mode
+      - tiger:/keys/tab
+      - tiger:/keys/page_up_down
+      #- tiger:/keys/selector
+      - tiger:/keys/options_toggle
+
+#__include: tiger:/rec
+recognizer:
+  import_preset: default
+  patterns:
+    punct: '^/([0-9]0?|[A-Za-z]+)$'
+    #radical_flypy: "^R[a-z]*`?$"
+    reverse_lookup: "^`[a-z]*'?$"
+    expression: '^=.*$'
+
+punctuator:
+  #import_preset:
+  __include: tiger:/punctuator
+
+tiger_spelling:
+  lua:
+    switch_key: "Control+c"
+    cycle_key: "Shift+Control+C"
+schema_name:
+  spelling: tiger_spelling_pseudo
+  code: tiger_phrase_chord
+
+menu:
+  page_size: 1
+
+chord_composer:
+  alphabet: qazwsxedcrfvtgbyhnujmik,ol.p;/ `
+  algebra:  # 来自猫师自然码并击指法
+    - xlit|;,./|ACXZ|  # 符号映射为大写字母，分离其转义干扰
+    - xlit| |一|  # 主空格
+    - xform/^([qwertasdfgzxcvb]+)([一]*)$/$1_$2/  # 处理左手击的表示
+    - xform/^([yuiophjklAnmCXZ]+)([一]*)$/_$1$2/  # 处理右手击的表示
+    - xform/^([qwertasdfgzxcvb]+)([yuiophjklAnmCXZ]+)([一]*)$/$1$2$3/  # 合并单手击的表示
+
+    - xform/([qwertasdfgzxcvb]+)/<$1>/  # 左手编码包装
+    - xform/([yuiophjklAnmCXZ]+)/<$1>/  # 右手编码包装
+    - xform/([一]+)/<$1>/  # 空格区编码包装
+
+    # 字母
+    - xform=(<zv>|<mZ>)=Q=
+    - xform=(<wv>|<no>)=W=
+    - xform=(<ev>|<ni>)=E=
+    - xform=(<et>|<yi>)=R=
+    - xform=(<qt>|<yp>)=T=
+    - xform=(<wt>|<yo>)=Y=
+    - xform=(<af>|<jA>)=U=
+    - xform=(<xv>|<mX>)=I=
+    - xform=(<aw>|<oA>)=O=
+    - xform=(<qf>|<jp>)=P=
+    - xform=(<wer>|<uio>)=/=
+    - xform=(<qwe>|<iop>)=\=
+    - xform=(<rt>|<yu>)=[=
+    - xform=(<ert>|<yui>)=]=
+
+    - xform=(<av>|<nA>)=A=
+    - xform=(<sv>|<nl>)=S=
+    - xform=(<dv>|<nk>)=D=
+    - xform=(<sg>|<hl>)=F=
+    - xform=(<dg>|<hk>)=G=
+    - xform=(<ar>|<uA>)=H=
+    - xform=(<xf>|<jX>)=J=
+    - xform=(<xc>|<CX>)=K=
+    - xform=(<sr>|<ul>)=L=
+    - xform=(<dc>|<mk>)=~=
+    - xform=(<fv>|<nj>)=|=
+    - xform=(<fg>|<hj>)=(=
+    - xform=(<dfg>|<hjk>)=)=
+
+    - xform=(<zf>|<jZ>)=Z=
+    - xform=(<xd>|<kX>)=X=
+    - xform=(<xb>|<nX>)=C=
+    - xform=(<zs>|<lZ>)=V=
+    - xform=(<qw>|<op>)=B=
+    - xform=(<se>|<il>)=N=
+    - xform=(<wd>|<ko>)=M=
+    - xform=(<at>|<yA>)=<=
+    - xform=(<ag>|<hA>)=>=
+    - xform=(<zx>|<XZ>)=@=
+    - xform=(<vb>|<nm>)=$=
+
+    - xform=(<q>|<p>)=q=
+    - xform=(<w>|<o>)=w=
+    - xform=(<e>|<i>)=e=
+    - xform=(<r>|<u>)=r=
+    - xform=(<t>|<y>)=t=
+    - xform=(<ef>|<ji>)=y=
+    - xform=(<er>|<ui>)=u=
+    - xform=(<we>|<io>)=i=
+    - xform=(<wr>|<uo>)=o=
+    - xform=(<qr>|<up>)=p=
+    - xform=(<qe>|<ip>)=%=
+    - xform=(<wg>|<ho>)=-=
+    - xform/(<qg>|<hp>)/=/
+
+    - xform=(<a>|<A>)=a=
+    - xform=(<s>|<l>)=s=
+    - xform=(<d>|<k>)=d=
+    - xform=(<f>|<j>)=f=
+    - xform=(<g>|<h>)=g=
+    - xform=(<wf>|<jo>)=h=
+    - xform=(<df>|<jk>)=j=
+    - xform=(<sd>|<kl>)=k=
+    - xform=(<sf>|<jl>)=l=
+    - xform=(<as>|<lA>)=:=
+    - xform=(<ad>|<kA>)=;=
+    - xform=(<asd>|<klA>)='=
+    - xform=(<adf>|<jkA>)="=
+    - xform=(<rf>|<uj>)=_=
+    - xform=(<rg>|<hu>)={=
+    - xform=(<eg>|<hi>)=}=
+
+    - xform=(<z>|<Z>)=z=
+    - xform=(<x>|<X>)=x=
+    - xform=(<c>|<C>)=c=
+    - xform=(<v>|<m>)=v=
+    - xform=(<b>|<n>)=b=
+    - xform=(<sc>|<Cl>)=n=
+    - xform=(<cv>|<mC>)=m=
+    - xform=(<sdf>|<jkl>)=,=
+    - xform=(<wef>|<jio>)=.=
+    - xform=(<sef>|<jil>)=!=
+    - xform=(<zb>|<nZ>)=?=
+    - xform=(<zc>|<CZ>)=#=
+    - xform=(<zxc>|<CXZ>)=*=
+    - xform=(<xcv>|<mCX>)=&=
+    - xform=(<cvb>|<nmC>)=+=
+
+    - xform|(.)_<一>|<"1>$1_|
+    - xform|_(.)<一>|<"1>_$1|
+    - xform|(..)<一>|<"1>$1|
+    - xform|^<一>|<1>|
+
+    - xform/<1>/ /
+    - xform/<"1>/"/
+    - xform/"([a-zA-Z])f$/$1/  # 左大小写 + 右j + 空格，为补第三码
+    - xform/"f([a-zA-Z])$/$1/  # 左f + 右大小写 + 空格，为补第三码
+
+    - xform/^.*<.+>.*$//
+
+    - xform=，="""",=
+    - xform=。="""".=
+    - xform=！=""""!=
+    - xform=？=""""?=
+
+  prompt_format:
+    # 码元显示效果修正
+    - xform/"""",$/，/
+    - xform/""""\.$/。/
+    - xform/""""!$/！/
+    - xform/""""\?$/？/
