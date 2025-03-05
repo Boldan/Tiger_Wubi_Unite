@@ -1,0 +1,218 @@
+require "import"
+import "android.widget.*"
+import "android.view.*"
+import "android.graphics.RectF"
+import "android.content.Context"
+import "java.io.*"
+import "java.io.File"
+import "com.osfans.trime.*" --载入包
+import "android.text.Html"
+import "android.graphics.drawable.StateListDrawable"
+
+
+local 项目组=dofile_信息表.内容
+local 词库=dofile_信息表.词库
+
+local function 写入词库(字符串,词库文件)
+  io.open(词库文件,"a+"):write("\n"..字符串):close()
+  Toast.makeText(service," 词组【"..字符串.."】 添加成功",2000).show()
+end
+
+local ids={}
+local data={}
+local item={LinearLayout,
+  layout_width=-1,
+  layout_height="30dp",
+  padding="2dp",
+  orientation="vertical",
+  gravity=17,
+
+  {CardView,
+    radius="5dp",
+    layout_height="36dp",
+    CardElevation=0,
+    layout_width=-1,
+    BackgroundColor=0x49d3d7da,
+    --gravity=3|17,
+    
+    {LinearLayout,
+    layout_width=-1,
+    --BackgroundColor=0x49d3d7da,
+    --gravity=3|17,
+    {TextView,
+    id="b",
+    textColor=0xffAA7700,
+    textSize="14dp"},
+    {TextView,
+      id="a",
+      padding="8dp",
+      --gravity=17,
+      layout_width=-1,
+      gravity="center",
+      --BackgroundColor=0x49d3d7da,
+      textColor=0xff232323,
+      textSize="14dp"}}}}
+      
+      
+      
+local adp=LuaAdapter(service,data,item)
+
+
+
+local function fresh(t)
+	table.clear(data)
+	for i=1,#t do
+		local v=t[i]
+		local a,b,c=v:match("^%s*([^\n]+)(\n*[^\n]*)(\n*[^\n]*)")
+		a=table.concat{utf8.sub(a or "",1,99),utf8.sub(b or "",1,99),utf8.sub(c or "",1,99)}
+		table.insert(data,{b=tostring(i),a=a})
+	end
+	adp.notifyDataSetChanged()
+end
+
+
+
+local function Back() --生成功能键背景
+  local bka=LuaDrawable(function(c,p,d)
+    local b=d.bounds
+    b=RectF(b.left,b.top,b.right,b.bottom)
+    p.setColor(0xffffffff)
+    c.drawRoundRect(b,20,20,p) --圆角20
+  end)
+  local bkb=LuaDrawable(function(c,p,d)
+    local b=d.bounds
+    b=RectF(b.left,b.top,b.right,b.bottom)
+    p.setColor(0x49d3d7da)
+    c.drawRoundRect(b,20,20,p)
+  end)
+
+  local stb=StateListDrawable()
+  stb.addState({-android.R.attr.state_pressed},bkb)
+  stb.addState({android.R.attr.state_pressed},bka)
+  return stb
+end
+
+local function Icon(k,s) --获取k功能图标，没有返回s
+  k=Key.presetKeys[k]
+  return k and k.label or s
+end
+
+local function Bu_R(id) --生成功能键
+  local Bu={LinearLayout,
+    layout_height=-1,
+    layout_width=-1,
+    layout_weight=1,
+    padding="2dp",
+    {FrameLayout,
+      layout_height=-1,
+      layout_width=-1,
+      Background=Back(),
+      {TextView,
+        gravity=17|48,
+        layout_height=-1,
+        layout_width=-1,
+        layout_marginTop="2dp",
+        textColor=0xff232323,
+        textSize="10dp"},
+      {TextView,
+        gravity=17,
+        layout_height=-1,
+        layout_width=-1,
+        textColor=0xff232323,
+        textSize="18dp"}}}
+  local msg=Bu[2][2] --上标签
+  local label=Bu[2][3] --主标签
+  
+ 
+  if id==1 then
+    label.text=Icon("关闭","关闭")
+    Bu.onClick=function()
+      dialog.dismiss()
+    end
+  end
+  return Bu
+end
+
+
+
+local layout={LinearLayout,
+  orientation=1,
+  --键盘高度
+  layout_width=-1,
+  --背景颜色
+  --BackgroundColor=0xffd7dddd,
+  {TextView,
+    id="title",
+    layout_height="30dp",
+    layout_width=-1,
+    text="",
+    gravity="center",
+    paddingLeft="2dp",
+    paddingRight="2dp",
+    BackgroundColor=0x49d3d7da
+    },
+    {LinearLayout,
+    gravity="right",
+    layout_height=-1,
+    {LinearLayout,
+      id="main",
+      orientation=1,
+      --右侧功能键宽度
+      layout_weight=1,
+      layout_height=-1,
+      layout_gravity=8|3,
+      {GridView, --列表控件
+        id="list",
+        numColumns=1, --6列
+        paddingLeft="2dp",
+        paddingRight="2dp",
+        layout_width=-1,
+        layout_weight=1}},
+
+   {LinearLayout,
+      orientation=1,
+      layout_weight=1,
+      layout_width="100dp",
+      layout_height=-1,
+      --layout_gravity=5|84,
+      Bu_R(1),
+      },
+}}
+
+
+layout=loadlayout(layout,ids)
+
+ids.list.Adapter=adp
+
+
+
+fresh(项目组)
+local 标题="重码选择模块1.0"
+ids.title.setText(标题)
+ids.list.onItemClick=function(l,v,p)
+	写入词库(项目组[p+1],词库)
+	dialog.dismiss()
+	print()
+end
+
+ids.list.onItemLongClick=function(l,v,p)
+	print(项目组[p+1])
+  return true
+end
+
+local Bus={LinearLayout,
+  paddingLeft="2dp",
+  layout_width=-1}
+
+
+ids.main.addView(loadlayout(Bus))
+
+
+
+local dl=LuaDialog(service)
+.setView(layout)
+dl.show()
+dialog=dl.show()
+
+
+
