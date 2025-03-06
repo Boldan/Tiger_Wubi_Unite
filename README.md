@@ -1,6 +1,6 @@
 # Tiger_Wubi_Unite(虎码五笔大一统)  
-
-  - 虎码：虎字，虎词，鬼虎，虎字·句，虎词·句，虎字·顶功，虎字·并击
+- 方案
+    - 虎码：虎字，虎词，鬼虎，虎字·句，虎词·句，虎字·顶功，虎字·并击
     > - schema: tiger					        # 虎字·官方
     > - schema: tiger_chord_popping		# 虎字·并击
     > - schema: tiger_code				    # 虎字·官方
@@ -32,6 +32,16 @@
     > - schema: easy_en				        # 英文
     > - schema: numbers				        # 数字
     > - schema: pinyin_simp			      # 简体拼音
+    > - schema: easy_en               # 智能英文
+    > - schema: easy_english          # 英语词典    
+- 功能
+  - 反查
+  - 造词
+  - 拆分
+  - 火星文
+  - 所有方案统一共用用户词典：Custom_phrase.txt （建议存放私有资料）
+  - 所有虎码统一用户词典：user_tiger.dict.yaml
+  - 所有五笔统一用户词典：user_wubi.dict.yaml
 
 # 鸣谢
   [胖虎](https://github.com/rimeinn/rime-tiger)
