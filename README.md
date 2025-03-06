@@ -34,6 +34,6 @@
     > - schema: pinyin_simp			      # 简体拼音
 
 # 鸣谢
-    [胖虎](https://github.com/rimeinn/rime-tiger)
+  [胖虎](https://github.com/rimeinn/rime-tiger)
     
     
