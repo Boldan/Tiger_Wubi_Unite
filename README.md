@@ -1,5 +1,5 @@
-# Tiger_Wubi_Unite 
-- 虎码和五笔大一统
+# Tiger_Wubi_Unite(虎码和五笔大一统)  
+
   - 虎码：虎字，虎词，鬼虎，虎字·句，虎词·句，虎字·顶功，虎字·并击
     > - schema: tiger					        # 虎字·官方
     > - schema: tiger_chord_popping		# 虎字·并击
@@ -23,7 +23,7 @@
     > - schema: wubi98_U				      # 五笔98版·大字集
     > - schema: wubi98_ci				      # 五笔98版·词
     > - schema: wubi98_dz				      # 五笔98版·字
- - 其它：
+  - 其它：
     > - schema: stroke                # 笔画     
     > - schema: radical_flypy         # 部件拆字 | 双拼
     > - schema: pinyin_simp           # 简体拼音
@@ -32,7 +32,6 @@
     > - schema: easy_en				        # 英文
     > - schema: numbers				        # 数字
     > - schema: pinyin_simp			      # 简体拼音
-
 
 # 鸣谢
     [胖虎](https://github.com/rimeinn/rime-tiger)
