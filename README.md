@@ -39,6 +39,9 @@
   - 造词
   - 拆分
   - 火星文
+  - 日期
+  - 大写
+  - 计算
   - 所有方案统一共用用户词典：Custom_phrase.txt （建议存放私有资料）
   - 所有虎码统一用户词典：user_tiger.dict.yaml
   - 所有五笔统一用户词典：user_wubi.dict.yaml
