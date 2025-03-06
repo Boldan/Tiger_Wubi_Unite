@@ -1,6 +1,6 @@
 # Tiger_Wubi_Unite(虎码五笔大一统)  
 - 方案
-    - 虎码：虎字，虎词，鬼虎，虎字·句，虎词·句，虎字·顶功，虎字·并击
+  - 虎码：虎字，虎词，鬼虎，虎字·句，虎词·句，虎字·顶功，虎字·并击
     > - schema: tiger					        # 虎字·官方
     > - schema: tiger_chord_popping		# 虎字·并击
     > - schema: tiger_code				    # 虎字·官方
